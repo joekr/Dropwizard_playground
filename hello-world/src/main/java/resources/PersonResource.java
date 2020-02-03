@@ -1,7 +1,9 @@
 package com.helloworld.resources;
 
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
+import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
@@ -37,7 +39,20 @@ public class PersonResource {
     return new Person(person.getId(), person.getFirstName(), person.getLastName());
   }
 
-  // TODO: update person
-  // TODO: delete person
+  @PUT
+  @Path("/{id}")
+  @Timed
+  public Response updatePerson(@PathParam("id") long id, Person person){
+    personDao.update(id, person.getFirstName(), person.getLastName());
+    return Response.ok().build();
+  }
+
+  @DELETE
+  @Path("/{id}")
+  @Timed
+  public Response deletePerson(@PathParam("id") long id){
+    personDao.delete(id);
+    return Response.ok().build();
+  }
 
 }
