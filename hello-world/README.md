@@ -24,3 +24,4 @@ While learning I've gotten the API to do the basic CRUD I wanted it to do. A few
 - return data object on create/update
 - better mapping from JSON into DAO. I feel like passing params on all calls is isn't great
 - Guice/Guava/Lombok
+- input validation
