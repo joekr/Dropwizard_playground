@@ -2,6 +2,7 @@ package com.helloworld;
 
 import com.helloworld.health.TemplateHealthCheck;
 import com.helloworld.resource.HelloWorldResource;
+import com.helloworld.resources.PersonResource;
 import com.helloworld.core.Person;
 import com.helloworld.db.PersonDao;
 
@@ -42,9 +43,12 @@ public class HelloWorldApplication extends Application<HelloWorldConfiguration> 
             personDao
         );
 
+        final PersonResource personResource = new PersonResource(personDao);
+
         final TemplateHealthCheck healthCheck = new TemplateHealthCheck(configuration.getTemplate());
 
         environment.jersey().register(resource);
+        environment.jersey().register(personResource);
         environment.healthChecks().register("template", healthCheck);
     }
 

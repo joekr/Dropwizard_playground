@@ -39,18 +39,13 @@ public class HelloWorldResource{
     return new Saying(counter.incrementAndGet(), value);
   }
 
-  // TODO: create person
-
   @GET
   @Path("/{id}")
   @Timed
   public Saying getPerson(@PathParam("id") long id){
     final Person person = personDao.getPerson(id);
-    final String value = String.format(template, person.getFirstName(), person.getLastName());
-    return new Saying(counter.incrementAndGet(), value);
+    final String value = String.format(template, person.getFullName());
+    return new Saying(id, value);
   }
-
-  // TODO: update person
-  // TODO: delete person
 
 }
