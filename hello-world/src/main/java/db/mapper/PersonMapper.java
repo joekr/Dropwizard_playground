@@ -10,8 +10,8 @@ import com.helloworld.core.Person;
 
 public class PersonMapper implements RowMapper<Person> {
   private static final String id = "id";
-  private static final String firstName = "firstName";
-  private static final String lastName = "lastName";
+  private static final String firstName = "first_name";
+  private static final String lastName = "last_name";
 
   public PersonMapper(){
 
