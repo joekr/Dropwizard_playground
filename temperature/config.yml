@@ -2,3 +2,9 @@ logging:
   level: INFO
   loggers:
     com.temperature: DEBUG
+
+database:
+  driverClass: org.postgresql.Driver
+  user: postgres
+  password: postgres
+  url: jdbc:postgresql://localhost/postgres

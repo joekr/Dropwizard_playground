@@ -1,13 +1,16 @@
 package com.temperature;
 
+import ch.qos.logback.core.db.DataSourceConnectionSource;
 import io.dropwizard.Application;
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
 
-public class temperatureApplication extends Application<temperatureConfiguration> {
+public class TemperatureApplication extends Application<TemperatureConfiguration> {
 
     public static void main(final String[] args) throws Exception {
-        new temperatureApplication().run(args);
+        new TemperatureApplication().run(args);
     }
 
     @Override
@@ -16,12 +19,17 @@ public class temperatureApplication extends Application<temperatureConfiguration
     }
 
     @Override
-    public void initialize(final Bootstrap<temperatureConfiguration> bootstrap) {
-        // TODO: application initialization
+    public void initialize(final Bootstrap<TemperatureConfiguration> bootstrap) {
+        bootstrap.addBundle(new MigrationsBundle<TemperatureConfiguration>(){
+            @Override
+            public DataSourceFactory getDataSourceFactory(TemperatureConfiguration config){
+                return config.getDataSourceFactory();
+            }
+        });
     }
 
     @Override
-    public void run(final temperatureConfiguration configuration,
+    public void run(final TemperatureConfiguration configuration,
                     final Environment environment) {
         // TODO: implement application
     }

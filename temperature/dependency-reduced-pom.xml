@@ -136,7 +136,7 @@
   </dependencyManagement>
   <properties>
     <dropwizard.version>2.0.1</dropwizard.version>
-    <mainClass>com.temperature.temperatureApplication</mainClass>
+    <mainClass>com.temperature.TemperatureApplication</mainClass>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
