@@ -1,8 +1,13 @@
 package com.temperature;
 
+import com.temperature.db.RoomDao;
+import com.temperature.resources.RoomResource;
+
 import ch.qos.logback.core.db.DataSourceConnectionSource;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.jdbi3.JdbiFactory;
+import org.jdbi.v3.core.Jdbi;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -29,9 +34,15 @@ public class TemperatureApplication extends Application<TemperatureConfiguration
     }
 
     @Override
-    public void run(final TemperatureConfiguration configuration,
-                    final Environment environment) {
-        // TODO: implement application
+    public void run(final TemperatureConfiguration configuration, final Environment environment) {
+
+        final JdbiFactory factory = new JdbiFactory();
+        final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
+        final RoomDao roomDao = jdbi.onDemand(RoomDao.class);
+
+        final RoomResource roomResource = new RoomResource(roomDao);
+
+        environment.jersey().register(roomResource);
     }
 
 }
