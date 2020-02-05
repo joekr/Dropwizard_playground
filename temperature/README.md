@@ -16,3 +16,10 @@ To see your applications health enter url `http://localhost:8081/healthcheck`
 ## Questions
 
 
+## Expectations
+
+- use lombok to replace getters/setters
+- API validation
+- DB migrations
+- figure out some basic Guice
+- Build a rough UI using Dropwizard Views
