@@ -26,7 +26,7 @@ public class RoomDo {
     super();
   }
 
-  public RoomDo(int id, String name, Timestamp create, Timestamp modified){
+  public RoomDo(int id, String name, Timestamp created, Timestamp modified) {
     this.id = id;
     this.name = name;
     this.created = created;
