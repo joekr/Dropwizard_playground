@@ -23,3 +23,5 @@ To see your applications health enter url `http://localhost:8081/healthcheck`
 - DB migrations
 - figure out some basic Guice
 - Build a rough UI using Dropwizard Views
+- add logger
+- Figure out how the JDBI3 DAO interface provides the implementation, and how to get DI working with it
