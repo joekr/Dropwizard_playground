@@ -11,6 +11,7 @@ import org.jdbi.v3.core.Jdbi;
 import io.dropwizard.migrations.MigrationsBundle;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
+import io.dropwizard.views.ViewBundle;
 
 public class TemperatureApplication extends Application<TemperatureConfiguration> {
 
@@ -31,6 +32,8 @@ public class TemperatureApplication extends Application<TemperatureConfiguration
                 return config.getDataSourceFactory();
             }
         });
+
+        bootstrap.addBundle(new ViewBundle<TemperatureConfiguration>() );
     }
 
     @Override
