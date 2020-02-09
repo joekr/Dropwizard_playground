@@ -18,10 +18,11 @@ To see your applications health enter url `http://localhost:8081/healthcheck`
 
 ## Expectations
 
-- use lombok to replace getters/setters
-- API validation
-- DB migrations
+- ~~use lombok to replace getters/setters~~
+- ~~API validation~~
+- ~~DB migrations~~
 - figure out some basic Guice
 - Build a rough UI using Dropwizard Views
 - add logger
 - Figure out how the JDBI3 DAO interface provides the implementation, and how to get DI working with it
+- return created object from API instead of just "created" status
