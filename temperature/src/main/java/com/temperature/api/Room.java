@@ -3,6 +3,9 @@ package com.temperature.api;
 import javax.validation.constraints.NotEmpty;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import io.dropwizard.validation.ValidationMethod;
+
 import java.sql.Timestamp;
 import java.util.Date;
 
@@ -21,12 +24,10 @@ public class Room {
 
   @Getter
   @JsonProperty
-  @NotEmpty
   private final Timestamp created;
 
   @Getter
   @JsonProperty
-  @NotEmpty
   private final Timestamp modified;
 
   public Room(int id, String name, Timestamp created, Timestamp modified){
@@ -41,5 +42,19 @@ public class Room {
     this.name = null;
     this.created = null;
     this.modified = null;
+  }
+
+  @ValidationMethod(message = "Room has a known bad name. Please try another one.")
+  public boolean isBadName() {
+    if (this.name.toLowerCase() == "unknown") {
+      return false;
+    }else{
+      return true;
+    }
+  }
+
+  @Override
+  public String toString() {
+    return String.format("id: %s, name: %s, created: %s, modified: %s", id, name, created, modified);
   }
 }
