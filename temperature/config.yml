@@ -8,3 +8,11 @@ database:
   user: postgres
   password: postgres
   url: jdbc:postgresql://localhost/postgres
+
+logging:
+  appenders:
+  - type: file
+    currentLogFilename: ./logs/temperature.log
+    archivedLogFilenamePattern: ./logs/temperature-%d.log.gz
+    archivedFileCount: 5
+  - type: console
