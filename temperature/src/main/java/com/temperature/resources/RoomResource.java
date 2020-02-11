@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response.Status;
 import com.google.inject.Inject;
 import com.temperature.api.Room;
 import com.temperature.db.RoomDao;
+import com.temperature.db.SensorDao;
 import com.temperature.view.CreateRoomView;
 import com.temperature.view.RoomView;
 import com.temperature.view.RoomsView;
@@ -32,12 +33,13 @@ import com.temperature.core.RoomDo;
 @Produces(MediaType.APPLICATION_JSON)
 public class RoomResource {
   private final RoomDao roomDao;
+  private final SensorDao sensorDao;
 
   private static final Logger log = LoggerFactory.getLogger(RoomResource.class);
 
-  @Inject
-  public RoomResource(RoomDao roomDao){
+  public RoomResource(RoomDao roomDao, SensorDao sensorDao){
     this.roomDao = roomDao;
+    this.sensorDao = sensorDao;
   }
 
   @GET
@@ -86,6 +88,11 @@ public class RoomResource {
     } else {
       return Response.status(Status.NOT_FOUND).entity("{'message': 'Room not found'}").build();
     }
+  }
+
+  @Path("/{id}")
+  public RoomSensorResource getSensors(@PathParam("id") int id) {
+      return new RoomSensorResource(id, this.sensorDao);
   }
 
 }

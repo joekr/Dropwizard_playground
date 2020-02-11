@@ -45,7 +45,7 @@
             <column name="sensor_id" type="bigint">
                 <constraints nullable="false"/>
             </column>
-            <column name="tempurature" type="float">
+            <column name="temperature" type="float">
                 <constraints nullable="false"/>
             </column>
             <column name="created" type="timestamp">

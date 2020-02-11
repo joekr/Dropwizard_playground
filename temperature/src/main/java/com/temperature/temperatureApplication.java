@@ -1,7 +1,12 @@
 package com.temperature;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
+import com.temperature.db.ReadingDao;
 import com.temperature.db.RoomDao;
+import com.temperature.db.SensorDao;
 import com.temperature.resources.RoomResource;
+import com.temperature.resources.SensorResource;
 
 import ch.qos.logback.core.db.DataSourceConnectionSource;
 import io.dropwizard.Application;
@@ -41,11 +46,20 @@ public class TemperatureApplication extends Application<TemperatureConfiguration
 
         final JdbiFactory factory = new JdbiFactory();
         final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
-        final RoomDao roomDao = jdbi.onDemand(RoomDao.class);
 
-        final RoomResource roomResource = new RoomResource(roomDao);
+        final RoomDao roomDao = jdbi.onDemand(RoomDao.class);
+        final SensorDao sensorDao = jdbi.onDemand(SensorDao.class);
+        final ReadingDao readingDao = jdbi.onDemand(ReadingDao.class);
+
+        // Injector roomInjector = Guice.createInjector(new RoomModule());
+        // environment.jersey().register(roomResource);
+
+
+        final RoomResource roomResource = new RoomResource(roomDao, sensorDao);
+        final SensorResource sensorResource = new SensorResource(sensorDao, readingDao);
 
         environment.jersey().register(roomResource);
+        environment.jersey().register(sensorResource);
     }
 
 }
