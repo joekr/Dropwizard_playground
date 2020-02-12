@@ -13,9 +13,10 @@ import org.jdbi.v3.sqlobject.statement.SqlQuery;
 import org.jdbi.v3.sqlobject.statement.SqlUpdate;
 
 public interface RoomDao {
-  @SqlUpdate("INSERT INTO rooms(name, created, modified) VALUES (:name, :now, :now)")
+  @SqlQuery("INSERT INTO rooms(name, created, modified) VALUES (:name, :now, :now) returning *")
+  @RegisterRowMapper(RoomMapper.class)
   @Timestamped
-  public int create(@Bind("name") String name);
+  public RoomDo create(@Bind("name") String name);
 
   @SqlQuery("select * from rooms where id = :id")
   @RegisterRowMapper(RoomMapper.class)

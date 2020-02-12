@@ -52,8 +52,8 @@ public class RoomResource {
   @POST
   public Response createRoom(@Valid Room room) {
     log.info("createRoom - room: {}", room);
-    roomDao.create(room.getName());
-    return Response.status(Status.CREATED).build();
+    RoomDo roomDo = roomDao.create(room.getName());
+    return Response.status(Status.CREATED).entity(roomDo).build();
   }
 
   @GET
