@@ -12,7 +12,12 @@ import com.temperature.core.ReadingDo;
 
 public interface ReadingDao {
 
-  @SqlQuery("select * from readings where sensor_id = :sensorId")
+  @SqlQuery("INSERT into readings(sensor_id, temperature, created, modified) VALUES(:sensorId, :temperature, :now, :now) returning *")
+  @RegisterRowMapper(ReadingMapper.class)
+  @Timestamped
+  public ReadingDo create(@Bind("sensorId") int sensorId, @Bind("temperature") float temperature);
+
+  @SqlQuery("select * from readings where sensor_id = :sensorId order by created ASC")
   @RegisterRowMapper(ReadingMapper.class)
   public List<ReadingDo> findAllForSensor(@Bind("sensorId") int sensorId);
 
