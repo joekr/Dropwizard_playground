@@ -12,6 +12,10 @@ Health Check
 
 To see your applications health enter url `http://localhost:8081/healthcheck`
 
+## Purpose
+
+First API with dropwizard. Just get a basic CRUD system that works.
+
 ## Questions
 
 - Difference between `dropwizard-hibernate` and `dropwizard-jdbi`

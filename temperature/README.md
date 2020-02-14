@@ -13,6 +13,10 @@ Health Check
 
 To see your applications health enter url `http://localhost:8081/healthcheck`
 
+## Purpose
+
+Become more familiar with Dropwizard. Integration a few more helper tools (Lombok, etc). Learn basics of building an API (nested routing, logging, etc). This is a happy path, non-auth API. Clearly not production ready.... clearly.
+
 ## Questions
 
 
