@@ -1,0 +1,53 @@
+ERROR [2020-02-18 02:42:52,873] org.apache.tomcat.jdbc.pool.ConnectionPool: Unable to create initial connections of pool.
+! java.net.ConnectException: Connection refused (Connection refused)
+! at java.net.PlainSocketImpl.socketConnect(Native Method)
+! at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+! at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+! at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+! at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+! at java.net.Socket.connect(Socket.java:607)
+! at org.postgresql.core.PGStream.<init>(PGStream.java:75)
+! at org.postgresql.core.v3.ConnectionFactoryImpl.tryConnect(ConnectionFactoryImpl.java:91)
+! at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:192)
+! ... 20 common frames omitted
+! Causing: org.postgresql.util.PSQLException: Connection to localhost:5432 refused. Check that the hostname and port are correct and that the postmaster is accepting TCP/IP connections.
+! at org.postgresql.core.v3.ConnectionFactoryImpl.openConnectionImpl(ConnectionFactoryImpl.java:280)
+! at org.postgresql.core.ConnectionFactory.openConnection(ConnectionFactory.java:49)
+! at org.postgresql.jdbc.PgConnection.<init>(PgConnection.java:211)
+! at org.postgresql.Driver.makeConnection(Driver.java:458)
+! at org.postgresql.Driver.connect(Driver.java:260)
+! at org.apache.tomcat.jdbc.pool.PooledConnection.connectUsingDriver(PooledConnection.java:319)
+! at org.apache.tomcat.jdbc.pool.PooledConnection.connect(PooledConnection.java:212)
+! at org.apache.tomcat.jdbc.pool.ConnectionPool.createConnection(ConnectionPool.java:744)
+! at org.apache.tomcat.jdbc.pool.ConnectionPool.borrowConnection(ConnectionPool.java:676)
+! at org.apache.tomcat.jdbc.pool.ConnectionPool.init(ConnectionPool.java:483)
+! at org.apache.tomcat.jdbc.pool.ConnectionPool.<init>(ConnectionPool.java:154)
+! at org.apache.tomcat.jdbc.pool.DataSourceProxy.pCreatePool(DataSourceProxy.java:118)
+! at org.apache.tomcat.jdbc.pool.DataSourceProxy.createPool(DataSourceProxy.java:107)
+! at org.apache.tomcat.jdbc.pool.DataSourceProxy.getConnection(DataSourceProxy.java:131)
+! at io.dropwizard.migrations.AbstractLiquibaseCommand.createDatabase(AbstractLiquibaseCommand.java:94)
+! at io.dropwizard.migrations.AbstractLiquibaseCommand.openLiquibase(AbstractLiquibaseCommand.java:79)
+! at io.dropwizard.migrations.AbstractLiquibaseCommand.run(AbstractLiquibaseCommand.java:67)
+! at io.dropwizard.cli.ConfiguredCommand.run(ConfiguredCommand.java:87)
+! at io.dropwizard.cli.Cli.run(Cli.java:79)
+! at io.dropwizard.Application.run(Application.java:94)
+! at com.goals.goalsApplication.main(goalsApplication.java:16)
+INFO  [2020-02-18 02:45:54,125] liquibase.executor.jvm.JdbcExecutor: SELECT COUNT(*) FROM public.databasechangeloglock
+INFO  [2020-02-18 02:45:54,148] liquibase.executor.jvm.JdbcExecutor: CREATE TABLE public.databasechangeloglock (ID INTEGER NOT NULL, LOCKED BOOLEAN NOT NULL, LOCKGRANTED TIMESTAMP WITHOUT TIME ZONE, LOCKEDBY VARCHAR(255), CONSTRAINT DATABASECHANGELOGLOCK_PKEY PRIMARY KEY (ID))
+INFO  [2020-02-18 02:45:54,175] liquibase.executor.jvm.JdbcExecutor: SELECT COUNT(*) FROM public.databasechangeloglock
+INFO  [2020-02-18 02:45:54,184] liquibase.executor.jvm.JdbcExecutor: DELETE FROM public.databasechangeloglock
+INFO  [2020-02-18 02:45:54,187] liquibase.executor.jvm.JdbcExecutor: INSERT INTO public.databasechangeloglock (ID, LOCKED) VALUES (1, FALSE)
+INFO  [2020-02-18 02:45:54,196] liquibase.executor.jvm.JdbcExecutor: SELECT LOCKED FROM public.databasechangeloglock WHERE ID=1
+INFO  [2020-02-18 02:45:54,210] liquibase.lockservice.StandardLockService: Successfully acquired change log lock
+INFO  [2020-02-18 02:45:55,200] liquibase.changelog.StandardChangeLogHistoryService: Creating database history table with name: public.databasechangelog
+INFO  [2020-02-18 02:45:55,201] liquibase.executor.jvm.JdbcExecutor: CREATE TABLE public.databasechangelog (ID VARCHAR(255) NOT NULL, AUTHOR VARCHAR(255) NOT NULL, FILENAME VARCHAR(255) NOT NULL, DATEEXECUTED TIMESTAMP WITHOUT TIME ZONE NOT NULL, ORDEREXECUTED INTEGER NOT NULL, EXECTYPE VARCHAR(10) NOT NULL, MD5SUM VARCHAR(35), DESCRIPTION VARCHAR(255), COMMENTS VARCHAR(255), TAG VARCHAR(255), LIQUIBASE VARCHAR(20), CONTEXTS VARCHAR(255), LABELS VARCHAR(255), DEPLOYMENT_ID VARCHAR(10))
+INFO  [2020-02-18 02:45:55,215] liquibase.executor.jvm.JdbcExecutor: SELECT COUNT(*) FROM public.databasechangelog
+INFO  [2020-02-18 02:45:55,218] liquibase.changelog.StandardChangeLogHistoryService: Reading from public.databasechangelog
+INFO  [2020-02-18 02:45:55,219] liquibase.executor.jvm.JdbcExecutor: SELECT * FROM public.databasechangelog ORDER BY DATEEXECUTED ASC, ORDEREXECUTED ASC
+INFO  [2020-02-18 02:45:55,224] liquibase.executor.jvm.JdbcExecutor: SELECT COUNT(*) FROM public.databasechangeloglock
+INFO  [2020-02-18 02:45:55,241] liquibase.executor.jvm.JdbcExecutor: CREATE TABLE public.users (id BIGINT GENERATED BY DEFAULT AS IDENTITY NOT NULL, email VARCHAR(255) NOT NULL, password_hash VARCHAR(255) NOT NULL, confirmation_token VARCHAR(255), confirmed_at TIMESTAMP WITHOUT TIME ZONE, last_login_at TIMESTAMP WITHOUT TIME ZONE NOT NULL, created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL, modified_at TIMESTAMP WITHOUT TIME ZONE NOT NULL, CONSTRAINT USERS_PKEY PRIMARY KEY (id), UNIQUE (email))
+INFO  [2020-02-18 02:45:55,258] liquibase.changelog.ChangeSet: Table users created
+INFO  [2020-02-18 02:45:55,262] liquibase.changelog.ChangeSet: ChangeSet migrations.xml::1::joekr ran successfully in 22ms
+INFO  [2020-02-18 02:45:55,263] liquibase.executor.jvm.JdbcExecutor: SELECT MAX(ORDEREXECUTED) FROM public.databasechangelog
+INFO  [2020-02-18 02:45:55,267] liquibase.executor.jvm.JdbcExecutor: INSERT INTO public.databasechangelog (ID, AUTHOR, FILENAME, DATEEXECUTED, ORDEREXECUTED, MD5SUM, DESCRIPTION, COMMENTS, EXECTYPE, CONTEXTS, LABELS, LIQUIBASE, DEPLOYMENT_ID) VALUES ('1', 'joekr', 'migrations.xml', NOW(), 1, '8:fe0332023b922f9932b2cf7176198877', 'createTable tableName=users', '', 'EXECUTED', NULL, NULL, '3.8.5', '1993955226')
+INFO  [2020-02-18 02:45:55,281] liquibase.lockservice.StandardLockService: Successfully released change log lock
