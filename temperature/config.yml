@@ -12,7 +12,7 @@ database:
 logging:
   appenders:
   - type: file
-    currentLogFilename: ./logs/temperature.log
-    archivedLogFilenamePattern: ./logs/temperature-%d.log.gz
+    currentLogFilename: ./logs/goals.log
+    archivedLogFilenamePattern: ./logs/goals-%d.log.gz
     archivedFileCount: 5
   - type: console

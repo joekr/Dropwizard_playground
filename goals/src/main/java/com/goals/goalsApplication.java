@@ -7,8 +7,17 @@ import io.dropwizard.setup.Environment;
 import ch.qos.logback.core.db.DataSourceConnectionSource;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi3.JdbiFactory;
+
+import com.goals.auth.GoalsAuthenticator;
+import com.goals.core.User;
+import com.goals.resources.GoalResource;
+
 import org.jdbi.v3.core.Jdbi;
 import io.dropwizard.migrations.MigrationsBundle;
+
+import io.dropwizard.auth.AuthDynamicFeature;
+import io.dropwizard.auth.AuthValueFactoryProvider;
+import io.dropwizard.auth.basic.BasicCredentialAuthFilter;
 
 public class GoalsApplication extends Application<GoalsConfiguration> {
 
@@ -34,7 +43,18 @@ public class GoalsApplication extends Application<GoalsConfiguration> {
     @Override
     public void run(final GoalsConfiguration configuration,
                     final Environment environment) {
-        // TODO: implement application
+
+        final GoalResource goalResource = new GoalResource();
+
+        environment.jersey().register(goalResource);
+
+        environment.jersey().register(new AuthDynamicFeature(
+            new BasicCredentialAuthFilter.Builder<User>()
+                .setAuthenticator(new GoalsAuthenticator())
+                .setRealm("SUPER SECRET STUFF")
+                .buildAuthFilter()));
+        //If you want to use @Auth to inject a custom Principal type into your resource
+        environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
     }
 
 }
