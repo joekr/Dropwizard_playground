@@ -10,7 +10,7 @@ import javax.ws.rs.core.Response.Status;
 import javax.annotation.security.PermitAll;
 
 import io.dropwizard.auth.Auth;
-import com.goals.core.User;
+import com.goals.core.User;;
 
 // Dummy class for now to test auth
 @Path("/goals")

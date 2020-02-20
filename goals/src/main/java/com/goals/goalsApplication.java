@@ -10,8 +10,12 @@ import io.dropwizard.jdbi3.JdbiFactory;
 
 import com.goals.auth.GoalsAuthenticator;
 import com.goals.core.User;
+import com.goals.db.UserDao;
 import com.goals.resources.GoalResource;
+import com.goals.resources.UserResource;
 
+import io.dropwizard.db.DataSourceFactory;
+import io.dropwizard.jdbi3.JdbiFactory;
 import org.jdbi.v3.core.Jdbi;
 import io.dropwizard.migrations.MigrationsBundle;
 
@@ -44,9 +48,17 @@ public class GoalsApplication extends Application<GoalsConfiguration> {
     public void run(final GoalsConfiguration configuration,
                     final Environment environment) {
 
+
+        final JdbiFactory factory = new JdbiFactory();
+        final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
+
+        final UserDao userDao = jdbi.onDemand(UserDao.class);
+
         final GoalResource goalResource = new GoalResource();
+        final UserResource userResource = new UserResource(userDao);
 
         environment.jersey().register(goalResource);
+        environment.jersey().register(userResource);
 
         environment.jersey().register(new AuthDynamicFeature(
             new BasicCredentialAuthFilter.Builder<User>()
