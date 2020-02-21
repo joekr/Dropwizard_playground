@@ -32,6 +32,6 @@ public class UserResource {
   public Response listGoals(UserSignup user) {
     String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
     this.userDao.create(user.getUsername(), hashed);
-    return Response.status(Status.CREATED).entity(message).build();
+    return Response.status(Status.CREATED).build();
   }
 }

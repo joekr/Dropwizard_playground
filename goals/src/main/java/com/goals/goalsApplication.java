@@ -62,7 +62,7 @@ public class GoalsApplication extends Application<GoalsConfiguration> {
 
         environment.jersey().register(new AuthDynamicFeature(
             new BasicCredentialAuthFilter.Builder<User>()
-                .setAuthenticator(new GoalsAuthenticator())
+                .setAuthenticator(new GoalsAuthenticator(userDao))
                 .setRealm("SUPER SECRET STUFF")
                 .buildAuthFilter()));
         //If you want to use @Auth to inject a custom Principal type into your resource
