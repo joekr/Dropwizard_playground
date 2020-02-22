@@ -4,13 +4,18 @@ import java.sql.Timestamp;
 import lombok.Getter;
 import lombok.Setter;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Getter
 @Setter
 public class UserDo {
 
   private int id;
   private final String email;
+
+  @JsonIgnore
   private final String passwordHash;
+
   private final String confirmationToken;
   private final Timestamp confirmedAt;
   private final Timestamp lastLoginAt;

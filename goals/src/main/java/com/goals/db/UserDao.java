@@ -15,10 +15,11 @@ import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 
 public interface UserDao {
 
-  @SqlUpdate("INSERT into users(email, password_hash, created_at, modified_at) VALUES(:username, :password, :now, :now)")
+  @SqlQuery("INSERT into users(email, password_hash, created_at, modified_at) VALUES(:username, :password, :now, :now) returning *")
+  @RegisterRowMapper(UserMapper.class)
   @Timestamped
   @GetGeneratedKeys
-  public int create(@Bind("username") String username, @Bind("password") String password);
+  public UserDo create(@Bind("username") String username, @Bind("password") String password);
 
   @SqlQuery("SELECT * from users where email = :username and confirmed_at is not null")
   @RegisterRowMapper(UserMapper.class)

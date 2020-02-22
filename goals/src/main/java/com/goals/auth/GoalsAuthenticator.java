@@ -10,9 +10,12 @@ import io.dropwizard.auth.Authenticator;
 import io.dropwizard.auth.basic.BasicCredentials;
 import io.dropwizard.auth.AuthenticationException;
 
+import org.jose4j.jwt.MalformedClaimException;
+import org.jose4j.jwt.consumer.JwtContext;
 import org.mindrot.jbcrypt.BCrypt;
 
-public class GoalsAuthenticator implements Authenticator<BasicCredentials, User> {
+
+public class GoalsAuthenticator implements Authenticator<JwtContext, User> {
   final private UserDao userDao;
 
   public GoalsAuthenticator(UserDao userDao) {
@@ -20,13 +23,10 @@ public class GoalsAuthenticator implements Authenticator<BasicCredentials, User>
   }
 
   @Override
-  public Optional<User> authenticate(BasicCredentials credentials) throws AuthenticationException {
-    final UserDo user = userDao.findByEmail(credentials.getUsername());
-
-    if (user != null && BCrypt.checkpw(credentials.getPassword(), user.getPasswordHash())) {
-        return Optional.of(new User(credentials.getUsername()));
-    }
-
-    return Optional.empty();
+  public Optional<User> authenticate(JwtContext context) throws AuthenticationException {
+    try {
+      final String email = context.getJwtClaims().getSubject();
+      return Optional.of(new User(email));
+    } catch (MalformedClaimException e) { return Optional.empty(); }
   }
 }
