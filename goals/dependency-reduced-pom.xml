@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.goals</groupId>
   <artifactId>goals</artifactId>
-  <name>goals</name>
+  <name>goals-project</name>
   <version>1.0</version>
   <build>
     <plugins>
@@ -131,6 +131,11 @@
         <version>3.12.0</version>
         <type>pom</type>
         <scope>import</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.auth0</groupId>
+        <artifactId>java-jwt</artifactId>
+        <version>3.10.0</version>
       </dependency>
     </dependencies>
   </dependencyManagement>

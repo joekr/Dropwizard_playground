@@ -12,6 +12,9 @@ public class GoalsConfiguration extends Configuration {
     @NotNull
     private DataSourceFactory database = new DataSourceFactory();
 
+    @NotNull
+    private String jwtSecret;
+
     @JsonProperty("database")
     public DataSourceFactory getDataSourceFactory(){
         return this.database;
@@ -20,5 +23,15 @@ public class GoalsConfiguration extends Configuration {
     @JsonProperty("database")
     public void setDataSourceFactory(DataSourceFactory dataSourceFactory) {
         this.database = dataSourceFactory;
+    }
+
+    @JsonProperty("jwtSecret")
+    public String getJWTSecret(){
+        return this.jwtSecret;
+    }
+
+    @JsonProperty("jwtSecret")
+    public void setJWTSecret(String jwtSecret){
+        this.jwtSecret = jwtSecret;
     }
 }

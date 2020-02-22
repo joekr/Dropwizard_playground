@@ -16,3 +16,5 @@ logging:
     archivedLogFilenamePattern: ./logs/temperature-%d.log.gz
     archivedFileCount: 5
   - type: console
+
+jwtSecret: my-secret
