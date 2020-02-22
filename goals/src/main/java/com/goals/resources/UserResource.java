@@ -52,7 +52,7 @@ public class UserResource {
   public Response signIn(UserSignup user) {
     final UserDo userDo = this.userDao.findByEmail(user.getUsername().toLowerCase());
 
-    if (user == null || !BCrypt.checkpw(user.getPassword(), userDo.getPasswordHash())) {
+    if (userDo == null || !BCrypt.checkpw(user.getPassword(), userDo.getPasswordHash())) {
       return Response.status(Status.UNAUTHORIZED).build();
     }
 
