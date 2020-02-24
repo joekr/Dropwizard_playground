@@ -1,5 +1,6 @@
 package com.goals.resources;
 
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
@@ -78,5 +79,13 @@ public class UserResource {
 //    TODO: save JWT to user
 
     return Response.status(Status.OK).entity(token).build();
+  }
+
+  @GET
+  @PermitAll
+  public Response getUser(@Auth User user) {
+    final UserDo userDo = this.userDao.findByEmail(user.getName().toLowerCase());
+
+    return Response.status(Status.OK).entity(userDo).build();
   }
 }
