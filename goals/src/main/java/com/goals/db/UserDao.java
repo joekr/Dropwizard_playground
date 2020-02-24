@@ -15,7 +15,7 @@ import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 
 public interface UserDao {
 
-  @SqlQuery("INSERT into users(email, password_hash, created_at, modified_at) VALUES(:username, :password, :now, :now) returning *")
+  @SqlQuery("INSERT into users(email, password_hash, team_id, created_at, modified_at) VALUES(:username, :password, 2, :now, :now) returning *")
   @RegisterRowMapper(UserMapper.class)
   @Timestamped
   @GetGeneratedKeys
