@@ -44,16 +44,27 @@ public class UserResource {
   @Path("/signup")
   public Response listGoals(UserSignup user) {
     String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
-    final UserDo userDo = this.userDao.create(user.getUsername().toLowerCase(), hashed);
-    return Response.status(Status.CREATED).entity(userDo).build();
+    final Optional<UserDo> userDo = this.userDao.create(user.getUsername().toLowerCase(), hashed);
+
+    if (userDo.isPresent()) {
+      return Response.status(Status.CREATED).entity(userDo).build();
+    } else {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
   }
 
   @POST
   @Path("/signin")
   public Response signIn(UserSignup user) {
-    final UserDo userDo = this.userDao.findByEmail(user.getUsername().toLowerCase());
+    final Optional<UserDo> userDoOp = this.userDao.findByEmail(user.getUsername().toLowerCase());
 
-    if (userDo == null || !BCrypt.checkpw(user.getPassword(), userDo.getPasswordHash())) {
+    if (!userDoOp.isPresent()) {
+      return Response.status(Status.UNAUTHORIZED).build();
+    }
+
+    final UserDo userDo = userDoOp.get();
+
+    if (!BCrypt.checkpw(user.getPassword(), userDo.getPasswordHash())) {
       return Response.status(Status.UNAUTHORIZED).build();
     }
 
@@ -84,8 +95,12 @@ public class UserResource {
   @GET
   @PermitAll
   public Response getUser(@Auth User user) {
-    final UserDo userDo = this.userDao.findByEmail(user.getName().toLowerCase());
+    final Optional<UserDo> userDo = this.userDao.findByEmail(user.getName().toLowerCase());
 
-    return Response.status(Status.OK).entity(userDo).build();
+    if (userDo.isPresent()) {
+      return Response.status(Status.OK).entity(userDo).build();
+    } else {
+      return Response.status(Status.NOT_FOUND).build();
+    }
   }
 }

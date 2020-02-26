@@ -1,6 +1,7 @@
 package com.goals.db;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.goals.core.UserDo;
 import com.goals.db.mapper.UserMapper;
@@ -19,12 +20,12 @@ public interface UserDao {
   @RegisterRowMapper(UserMapper.class)
   @Timestamped
   @GetGeneratedKeys
-  public UserDo create(@Bind("username") String username, @Bind("password") String password);
+  public Optional<UserDo> create(@Bind("username") String username, @Bind("password") String password);
 
   @SqlQuery("SELECT * from users where email = :username and confirmed_at is not null")
   @RegisterRowMapper(UserMapper.class)
   @Timestamped
 //  TODO: optional
-  public UserDo findByEmail(@Bind("username") String username);
+  public Optional<UserDo> findByEmail(@Bind("username") String username);
 
 }

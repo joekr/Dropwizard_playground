@@ -16,12 +16,4 @@ public class User implements Principal {
         this.name = name;
         this.teamId = teamId;
     }
-
-//    public String getName() {
-//        return name;
-//    }
-//
-//    public int getId() {
-//        return (int) (Math.random() * 100);
-//    }
 }
