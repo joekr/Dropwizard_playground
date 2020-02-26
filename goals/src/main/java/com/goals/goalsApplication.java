@@ -62,7 +62,7 @@ public class GoalsApplication extends Application<GoalsConfiguration> {
         final TeamDao teamDao = jdbi.onDemand(TeamDao.class);
 
         final GoalResource goalResource = new GoalResource();
-        final UserResource userResource = new UserResource(userDao, configuration.getJWTSecret());
+        final UserResource userResource = new UserResource(userDao, teamDao, configuration.getJWTSecret());
         final TeamResource teamResource = new TeamResource(userDao, teamDao);
 
         environment.jersey().register(goalResource);

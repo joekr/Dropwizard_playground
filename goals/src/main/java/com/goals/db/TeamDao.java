@@ -16,11 +16,10 @@ import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 
 public interface TeamDao {
 
-//    @SqlQuery("INSERT into users(email, password_hash, team_id, created_at, modified_at) VALUES(:username, :password, 2, :now, :now) returning *")
-//    @RegisterRowMapper(TeamMapper.class)
-//    @Timestamped
-//    @GetGeneratedKeys
-//    public UserDo create(@Bind("username") String username, @Bind("password") String password);
+    @SqlQuery("INSERT into teams(name, created_at, modified_at) VALUES(:name, :now, :now) returning *")
+    @RegisterRowMapper(TeamMapper.class)
+    @Timestamped
+    public Optional<TeamDo> create(@Bind("name") String name);
 
     @SqlQuery("SELECT * from teams where id = :id")
     @RegisterRowMapper(TeamMapper.class)
