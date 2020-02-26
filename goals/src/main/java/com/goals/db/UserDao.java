@@ -24,6 +24,7 @@ public interface UserDao {
   @SqlQuery("SELECT * from users where email = :username and confirmed_at is not null")
   @RegisterRowMapper(UserMapper.class)
   @Timestamped
+//  TODO: optional
   public UserDo findByEmail(@Bind("username") String username);
 
 }

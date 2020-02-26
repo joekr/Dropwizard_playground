@@ -30,8 +30,7 @@ public class TeamResource {
     @GET
     @PermitAll
     public Response listTeams(@Auth User user) {
-        final UserDo userDo = this.userDao.findByEmail(user.getName().toLowerCase());
-        final Optional<TeamDo> teamDo = this.teamDao.findById(userDo.getTeamId());
+        final Optional<TeamDo> teamDo = this.teamDao.findById(user.getTeamId());
         if (teamDo.isPresent()) {
             return Response.status(Status.OK).entity(teamDo.get()).build();
         } else {
