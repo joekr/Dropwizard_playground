@@ -26,7 +26,9 @@ public class GoalsAuthenticator implements Authenticator<JwtContext, User> {
   public Optional<User> authenticate(JwtContext context) throws AuthenticationException {
     try {
       final String email = context.getJwtClaims().getSubject();
-      return Optional.of(new User(email));
+      final UserDo userDo = this.userDao.findByEmail(email.toLowerCase());
+
+      return Optional.of(new User(userDo.getId(), userDo.getEmail(), userDo.getTeamId()));
     } catch (MalformedClaimException e) { return Optional.empty(); }
   }
 }
