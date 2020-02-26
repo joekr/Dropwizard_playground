@@ -1,6 +1,8 @@
 package com.goals;
 
 import com.github.toastshaman.dropwizard.auth.jwt.JwtAuthFilter;
+import com.goals.db.TeamDao;
+import com.goals.resources.TeamResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -57,12 +59,15 @@ public class GoalsApplication extends Application<GoalsConfiguration> {
         final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
 
         final UserDao userDao = jdbi.onDemand(UserDao.class);
+        final TeamDao teamDao = jdbi.onDemand(TeamDao.class);
 
         final GoalResource goalResource = new GoalResource();
         final UserResource userResource = new UserResource(userDao, configuration.getJWTSecret());
+        final TeamResource teamResource = new TeamResource(userDao, teamDao);
 
         environment.jersey().register(goalResource);
         environment.jersey().register(userResource);
+        environment.jersey().register(teamResource);
 
         final JwtConsumer consumer = new JwtConsumerBuilder()
                 .setAllowedClockSkewInSeconds(30) // allow some leeway in validating time based claims to account for clock skew
