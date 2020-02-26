@@ -13,6 +13,8 @@ import javax.annotation.security.PermitAll;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.goals.core.TeamDo;
+import com.goals.db.TeamDao;
 import io.dropwizard.auth.Auth;
 
 import com.goals.api.UserSignup;
@@ -33,10 +35,12 @@ import java.util.Optional;
 @Produces(MediaType.APPLICATION_JSON)
 public class UserResource {
   private final UserDao userDao;
+  private final TeamDao teamDao;
   private final String jwtSecret;
 
-  public UserResource(UserDao userDao, String jwtSecret){
+  public UserResource(UserDao userDao, TeamDao teamDao, String jwtSecret){
     this.userDao = userDao;
+    this.teamDao = teamDao;
     this.jwtSecret = jwtSecret;
   }
 
@@ -44,7 +48,13 @@ public class UserResource {
   @Path("/signup")
   public Response listGoals(UserSignup user) {
     String hashed = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt(12));
-    final Optional<UserDo> userDo = this.userDao.create(user.getUsername().toLowerCase(), hashed);
+    final Optional<TeamDo> teamDo = this.teamDao.create(user.getTeamName());
+
+    if (!teamDo.isPresent()) {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+
+    final Optional<UserDo> userDo = this.userDao.create(user.getUsername().toLowerCase(), hashed, teamDo.get().getId());
 
     if (userDo.isPresent()) {
       return Response.status(Status.CREATED).entity(userDo).build();
