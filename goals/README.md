@@ -7,6 +7,17 @@ How to start the goals application
 1. Start application with `java -jar target/goals-1.0.jar server config.yml`
 1. To check that your application is running enter url `http://localhost:8080`
 
+## Testing
+
+```
+TOKEN=<get token>
+curl -H 'Accept: application/json' -H "Authorization: Bearer ${TOKEN}" http://localhost:8080/goals
+```
+Load testing for fun
+```
+ab -T application/json -H "Authorization: Bearer ${TOKEN}" -c 10 -n 2000 http://localhost:8080/goals
+```
+
 Health Check
 ---
 
