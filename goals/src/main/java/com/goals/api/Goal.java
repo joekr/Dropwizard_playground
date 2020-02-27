@@ -15,17 +15,18 @@ public class Goal {
     private String goal;
 
     @JsonProperty
-    private final Timestamp completedAt;
+    private final Boolean completed;
+
 
     public Goal() {
         this.name = null;
         this.goal = null;
-        this.completedAt = null;
+        this.completed = null;
     }
 
-    public Goal(String name, String goal, Timestamp completedAt) {
+    public Goal(String name, String goal, Boolean completed) {
         this.name = name;
         this.goal = goal;
-        this.completedAt = completedAt;
+        this.completed = completed;
     }
 }

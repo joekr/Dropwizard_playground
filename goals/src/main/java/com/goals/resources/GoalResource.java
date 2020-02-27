@@ -1,10 +1,7 @@
 package com.goals.resources;
 
 import javax.validation.Valid;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.GET;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -13,12 +10,11 @@ import javax.annotation.security.PermitAll;
 
 import com.goals.api.Goal;
 import com.goals.core.GoalDo;
-import com.goals.core.TeamDo;
 import com.goals.db.GoalDao;
-import com.goals.db.TeamDao;
-import com.goals.db.UserDao;
 import io.dropwizard.auth.Auth;
-import com.goals.core.User;;import java.util.List;
+import com.goals.core.User;
+;import java.sql.Timestamp;
+import java.util.List;
 import java.util.Optional;
 
 // Dummy class for now to test auth
@@ -42,10 +38,41 @@ public class GoalResource {
     }
   }
 
+  @PATCH
+  @PermitAll
+  @Path("/{id}")
+  public Response createGoal(@Auth User user, @PathParam("id") int id, @Valid Goal goal) {
+    final Optional<GoalDo> goalDoOp = this.goalDao.findById(id, user.getId());
+    if (!goalDoOp.isPresent()) {
+      return Response.status(Status.NOT_FOUND).build();
+    }
+
+    final GoalDo goalDo = goalDoOp.get();
+
+//    Feels dirty. I need to find a better way to handle feel merging. Maybe reflection?
+    final String name = goal.getName() == null ? goalDo.getName() : goal.getName();
+    final String goalBody = goal.getGoal() == null ? goalDo.getGoal() : goal.getGoal();
+    Timestamp createdAt = null;
+    if (goal.getCompleted() == null) {
+      createdAt = goalDo.getCompletedAt();
+    } else {
+      if (goal.getCompleted()){
+        createdAt = new Timestamp(System.currentTimeMillis());
+      }
+    }
+
+    final Optional<GoalDo> goalDoUpdate = this.goalDao.update(id, goalDo.getUserId(), name, goalBody, createdAt);
+    if (goalDoUpdate.isPresent()) {
+      return Response.status(Status.OK).entity(goalDoUpdate.get()).build();
+    }else{
+      return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+  }
+
   @GET
   @PermitAll
   public Response listGoals(@Auth User user) {
-    final List<GoalDo> goalDo = this.goalDao.findById(user.getId());
+    final List<GoalDo> goalDo = this.goalDao.findByUserId(user.getId());
     return Response.status(Status.OK).entity(goalDo).build();
   }
 }
