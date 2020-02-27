@@ -9,18 +9,29 @@ import javax.ws.rs.core.Response.Status;
 
 import javax.annotation.security.PermitAll;
 
+import com.goals.core.GoalDo;
+import com.goals.core.TeamDo;
+import com.goals.db.GoalDao;
+import com.goals.db.TeamDao;
+import com.goals.db.UserDao;
 import io.dropwizard.auth.Auth;
-import com.goals.core.User;;
+import com.goals.core.User;;import java.util.List;
+import java.util.Optional;
 
 // Dummy class for now to test auth
 @Path("/goals")
 @Produces(MediaType.APPLICATION_JSON)
 public class GoalResource {
+  private final GoalDao goalDao;
+
+  public GoalResource(GoalDao goalDao){
+    this.goalDao = goalDao;
+  }
 
   @GET
   @PermitAll
   public Response listGoals(@Auth User user) {
-    final String message = String.format("{\"message\": \"%s\"}", user.getName());
-    return Response.status(Status.OK).entity(message).build();
+    final List<GoalDo> goalDo = this.goalDao.findById(user.getId());
+    return Response.status(Status.OK).entity(goalDo).build();
   }
 }

@@ -1,6 +1,7 @@
 package com.goals;
 
 import com.github.toastshaman.dropwizard.auth.jwt.JwtAuthFilter;
+import com.goals.db.GoalDao;
 import com.goals.db.TeamDao;
 import com.goals.resources.TeamResource;
 import io.dropwizard.Application;
@@ -59,9 +60,10 @@ public class GoalsApplication extends Application<GoalsConfiguration> {
         final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
 
         final UserDao userDao = jdbi.onDemand(UserDao.class);
+        final GoalDao goalDao = jdbi.onDemand(GoalDao.class);
         final TeamDao teamDao = jdbi.onDemand(TeamDao.class);
 
-        final GoalResource goalResource = new GoalResource();
+        final GoalResource goalResource = new GoalResource(goalDao);
         final UserResource userResource = new UserResource(userDao, teamDao, configuration.getJWTSecret());
         final TeamResource teamResource = new TeamResource(userDao, teamDao);
 
