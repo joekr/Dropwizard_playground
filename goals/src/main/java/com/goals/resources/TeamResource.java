@@ -14,7 +14,9 @@ import com.goals.core.UserDo;
 import com.goals.db.TeamDao;
 import com.goals.db.UserDao;
 import io.dropwizard.auth.Auth;
-import com.goals.core.User;;import java.util.Optional;
+import com.goals.core.User;
+import java.util.List;
+import java.util.Optional;
 
 @Path("/teams")
 @Produces(MediaType.APPLICATION_JSON)
@@ -36,5 +38,13 @@ public class TeamResource {
         } else {
             return Response.status(Status.NOT_FOUND).build();
         }
+    }
+
+    @GET
+    @PermitAll
+    @Path("/users")
+    public Response listTeamUsers(@Auth User user) {
+        final List<UserDo> userDo = this.teamDao.findAllUsersByTeamId(user.getTeamId());
+        return Response.status(Status.OK).entity(userDo).build();
     }
 }
