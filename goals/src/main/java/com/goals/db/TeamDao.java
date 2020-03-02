@@ -5,7 +5,9 @@ import java.util.Optional;
 
 
 import com.goals.core.TeamDo;
+import com.goals.core.UserDo;
 import com.goals.db.mapper.TeamMapper;
+import com.goals.db.mapper.UserMapper;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
 import org.jdbi.v3.sqlobject.customizer.Bind;
 import org.jdbi.v3.sqlobject.customizer.Timestamped;
@@ -25,5 +27,10 @@ public interface TeamDao {
     @RegisterRowMapper(TeamMapper.class)
     @Timestamped
     public Optional<TeamDo> findById(@Bind("id") int id);
+
+    @SqlQuery("SELECT * from users where team_id = :teamId")
+    @RegisterRowMapper(UserMapper.class)
+    @Timestamped
+    public List<UserDo> findAllUsersByTeamId(@Bind("teamId") int teamId);
 
 }
