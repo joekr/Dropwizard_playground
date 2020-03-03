@@ -75,4 +75,16 @@ public class GoalResource {
     final List<GoalDo> goalDo = this.goalDao.findByUserId(user.getId());
     return Response.status(Status.OK).entity(goalDo).build();
   }
+
+  @DELETE
+  @PermitAll
+  @Path("/{id}")
+  public Response deleteGoal(@Auth User user, @PathParam("id") int id) {
+    final int deleteCount = this.goalDao.delete(user.getId(), id);
+    if (deleteCount == 1) {
+      return Response.status(Status.OK).build();
+    } else {
+      return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+    }
+  }
 }
