@@ -1,9 +1,6 @@
 package com.goals.resources;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.POST;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
@@ -28,6 +25,7 @@ import sun.misc.ObjectInputFilter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
+import java.util.UUID;
 
 
 // Dummy class for now to test auth
@@ -54,7 +52,8 @@ public class UserResource {
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
 
-    final Optional<UserDo> userDo = this.userDao.create(user.getUsername().toLowerCase(), hashed, teamDo.get().getId());
+    final String token = UUID.randomUUID().toString();
+    final Optional<UserDo> userDo = this.userDao.create(user.getUsername().toLowerCase(), hashed, teamDo.get().getId(), token);
 
     if (userDo.isPresent()) {
       return Response.status(Status.CREATED).entity(userDo).build();
@@ -100,6 +99,25 @@ public class UserResource {
 //    TODO: save JWT to user
 
     return Response.status(Status.OK).entity(token).build();
+  }
+
+  @POST
+  @Path("/confirmation/{token}")
+  public Response confirmation(@PathParam("token") String token) {
+    final Optional<UserDo> userDoOp = this.userDao.findByConfermationToke(token);
+
+    if (!userDoOp.isPresent()) {
+      return Response.status(Status.UNAUTHORIZED).build();
+    }
+
+    final UserDo userDo = userDoOp.get();
+    final int id = this.userDao.confirm(userDo.getId());
+
+    if (id > 0) {
+      return Response.status(Status.OK).build();
+    } else {
+      return Response.status(Status.NOT_FOUND).build();
+    }
   }
 
   @GET
