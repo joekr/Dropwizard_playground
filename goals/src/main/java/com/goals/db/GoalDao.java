@@ -41,4 +41,7 @@ public interface GoalDao {
     @Timestamped
     public Optional<GoalDo> findById(@Bind("id") int id, @Bind("userId") int userId);
 
+    @SqlUpdate("delete from goals where user_id = :userId and id = :id")
+    @Timestamped
+    public int delete(@Bind("userId") int userId, @Bind("id") int id);
 }
