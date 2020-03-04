@@ -35,7 +35,11 @@ public interface UserDao {
   @Timestamped
   public Optional<UserDo> findByConfermationToke(@Bind("token") String token);
 
-  @SqlUpdate("UPDATE users set confirmation_token = null, confirmed_at = :now where id = :id and confirmed_at is null")
+  @SqlUpdate("UPDATE users set confirmation_token = null, confirmed_at = :now, modified_at = :now where id = :id and confirmed_at is null")
   @Timestamped
   public int confirm(@Bind("id") int id);
+
+  @SqlUpdate("UPDATE users set last_login_at = :now, modified_at = :now where id = :id")
+  @Timestamped
+  public int updateLoggedin(@Bind("id") int id);
 }

@@ -97,6 +97,7 @@ public class UserResource {
       return Response.status(Status.INTERNAL_SERVER_ERROR).build();
     }
 //    TODO: save JWT to user
+    this.userDao.updateLoggedin(userDo.getId());
 
     return Response.status(Status.OK).entity(token).build();
   }
