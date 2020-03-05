@@ -31,7 +31,7 @@ Become more familiar with Dropwizard. This web application will be a simple goal
 
 - Much of this is building off previous apps (hello-world and temperature)
 - ~~Authentication via username/password or JWT for API~~
-- basic authorization around team goals (read only for team, write for user)
+- ~~basic authorization around team goals (read only for team, write for user)~~
 - Write basic tests for authorizations
 - figure out some basic Guice (since I didn't in temperature app)
 - There will be a UI with forms, but the API can be used as well
