@@ -9,6 +9,7 @@ import javax.ws.rs.core.Response.Status;
 
 import javax.annotation.security.PermitAll;
 
+import com.goals.core.GoalDo;
 import com.goals.core.TeamDo;
 import com.goals.core.UserDo;
 import com.goals.db.TeamDao;
@@ -46,5 +47,13 @@ public class TeamResource {
     public Response listTeamUsers(@Auth User user) {
         final List<UserDo> userDo = this.teamDao.findAllUsersByTeamId(user.getTeamId());
         return Response.status(Status.OK).entity(userDo).build();
+    }
+
+    @GET
+    @PermitAll
+    @Path("/goals")
+    public Response listTeamGoals(@Auth User user) {
+        final List<GoalDo> goalDo = this.teamDao.findAllGoalsByTeamId(user.getTeamId());
+        return Response.status(Status.OK).entity(goalDo).build();
     }
 }

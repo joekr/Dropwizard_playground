@@ -4,8 +4,10 @@ import java.util.List;
 import java.util.Optional;
 
 
+import com.goals.core.GoalDo;
 import com.goals.core.TeamDo;
 import com.goals.core.UserDo;
+import com.goals.db.mapper.GoalMapper;
 import com.goals.db.mapper.TeamMapper;
 import com.goals.db.mapper.UserMapper;
 import org.jdbi.v3.sqlobject.config.RegisterRowMapper;
@@ -32,5 +34,10 @@ public interface TeamDao {
     @RegisterRowMapper(UserMapper.class)
     @Timestamped
     public List<UserDo> findAllUsersByTeamId(@Bind("teamId") int teamId);
+
+    @SqlQuery("SELECT * FROM goals WHERE user_id IN (SELECT id FROM users WHERE team_id = :teamId) order by created_at asc")
+    @RegisterRowMapper(GoalMapper.class)
+    @Timestamped
+    public List<GoalDo> findAllGoalsByTeamId(@Bind("teamId") int teamId);
 
 }
