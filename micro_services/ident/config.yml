@@ -3,9 +3,12 @@ logging:
   loggers:
     com.ident: DEBUG
 
-# http:
-#   port: 9000
-#   adminPort: 9001
+database:
+  driverClass: org.postgresql.Driver
+  user: postgres
+  password: postgres
+  url: jdbc:postgresql://localhost:5431/postgres
+
 server:
   applicationConnectors:
   - type: http
@@ -13,3 +16,5 @@ server:
   adminConnectors:
   - type: http
     port: 9005
+
+jwtSecret: my-secret

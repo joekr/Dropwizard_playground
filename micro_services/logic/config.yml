@@ -3,9 +3,6 @@ logging:
   loggers:
     com.logic: DEBUG
 
-# http:
-#   port: 9004
-#   adminPort: 9005
 server:
   applicationConnectors:
     - type: http
