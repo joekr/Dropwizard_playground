@@ -1,0 +1,15 @@
+logging:
+  level: INFO
+  loggers:
+    com.ident: DEBUG
+
+# http:
+#   port: 9000
+#   adminPort: 9001
+server:
+  applicationConnectors:
+  - type: http
+    port: 9004
+  adminConnectors:
+  - type: http
+    port: 9005

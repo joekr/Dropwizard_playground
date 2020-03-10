@@ -1,0 +1,15 @@
+logging:
+  level: INFO
+  loggers:
+    com.datalayer: DEBUG
+
+# http:
+#   port: 9002
+#   adminPort: 9003
+server:
+  applicationConnectors:
+  - type: http
+    port: 9002
+  adminConnectors:
+  - type: http
+    port: 9003
