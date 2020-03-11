@@ -1,5 +1,7 @@
 package com.ident;
 
+import com.ident.db.UserDao;
+import com.ident.resources.UserResource;
 import io.dropwizard.Application;
 import io.dropwizard.db.DataSourceFactory;
 import io.dropwizard.jdbi3.JdbiFactory;
@@ -37,6 +39,11 @@ public class IdentityApplication extends Application<IdentityConfiguration> {
 
         final JdbiFactory factory = new JdbiFactory();
         final Jdbi jdbi = factory.build(environment, configuration.getDataSourceFactory(), "postgresql");
+
+        final UserDao userDao = jdbi.onDemand(UserDao.class);
+        final UserResource userResource = new UserResource(userDao, configuration.getJWTSecret());
+
+        environment.jersey().register(userResource);
     }
 
 }
