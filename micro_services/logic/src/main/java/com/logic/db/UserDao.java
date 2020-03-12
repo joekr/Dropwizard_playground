@@ -18,8 +18,13 @@ public class UserDao {
         Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
 
-        @SuppressWarnings("rawtypes")
-        String jwt = response.readEntity(String.class);
-        return Optional.of(jwt);
+        if (response.getStatus() == 200) {
+            @SuppressWarnings("rawtypes")
+            String jwt = response.readEntity(String.class);
+
+            return Optional.of(jwt);
+        } else {
+            return Optional.empty();
+        }
     }
 }
