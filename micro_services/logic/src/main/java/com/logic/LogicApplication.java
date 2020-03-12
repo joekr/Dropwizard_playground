@@ -1,5 +1,7 @@
 package com.logic;
 
+import com.logic.db.UserDao;
+import com.logic.resources.UserResource;
 import io.dropwizard.Application;
 import io.dropwizard.setup.Bootstrap;
 import io.dropwizard.setup.Environment;
@@ -29,6 +31,12 @@ public class LogicApplication extends Application<LogicConfiguration> {
 //        config.setPort(8085);
 //        config.setAdminPort(8086);
 //        configuration.setHttpConfiguration(config);
+
+//        TODO: setup guice
+        final UserDao userDao = new UserDao();
+        final UserResource userResource = new UserResource(userDao);
+
+        environment.jersey().register(userResource);
     }
 
 }
