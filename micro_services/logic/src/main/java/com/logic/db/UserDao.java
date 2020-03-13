@@ -1,6 +1,7 @@
 package com.logic.db;
 
 import com.google.inject.Inject;
+import com.logic.api.User;
 import com.logic.api.UserSignin;
 import io.dropwizard.client.HttpClientConfiguration;
 import org.glassfish.jersey.client.JerseyClient;
@@ -18,9 +19,24 @@ public class UserDao {
         this.client = client;
     }
 
-    public Optional<String> auth(UserSignin user) {
-//        final Client client = ClientBuilder.newClient();
-//        TODO: move out of class using GUICE and conf
+    public Optional<User> auth(String jwt) {
+        WebTarget webTarget = this.client.target("http://localhost:9004/users/authenticate");
+        Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
+        Response response = invocationBuilder.post(Entity.entity(jwt, MediaType.APPLICATION_JSON));
+
+//        System.out.println(response);
+//        System.out.println(response.readEntity(String.class));
+        if (response.getStatus() == 200) {
+            @SuppressWarnings("rawtypes")
+            User user = response.readEntity(User.class);
+
+            return Optional.of(user);
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<String> signin(UserSignin user) {
         WebTarget webTarget = this.client.target("http://localhost:9004/users/signin");
         Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.entity(user, MediaType.APPLICATION_JSON));

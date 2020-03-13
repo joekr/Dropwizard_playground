@@ -3,6 +3,8 @@ package com.ident.resources;
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.interfaces.DecodedJWT;
 import com.ident.api.UserSignup;
 import com.ident.core.UserDo;
 import com.ident.db.UserDao;
@@ -103,5 +105,27 @@ public class UserResource {
         this.userDao.updateLoggedin(userDo.getId());
 
         return Response.status(Status.OK).entity(token).build();
+    }
+
+    @POST
+    @Path("/authenticate")
+    public Response signIn(String stringToken) {
+        DecodedJWT decodedJWT = null;
+        try {
+            decodedJWT = JWT.decode(stringToken);
+        } catch(JWTDecodeException e) {
+            return Response.status(Status.UNAUTHORIZED).build();
+        }
+
+        final String email = decodedJWT.getSubject();
+        final Optional<UserDo> userDoOp = this.userDao.findByEmail(email.toLowerCase());
+
+        if (!userDoOp.isPresent()) {
+            return Response.status(Status.UNAUTHORIZED).build();
+        }
+
+        final UserDo userDo = userDoOp.get();
+
+        return Response.status(Status.OK).entity(userDo).build();
     }
 }

@@ -22,7 +22,7 @@ public class UserResource {
     @POST
     @Path("/signin")
     public Response signIn(UserSignin user) {
-        final Optional<String> jwt = this.userDao.auth(user);
+        final Optional<String> jwt = this.userDao.signin(user);
 
         if (!jwt.isPresent()) {
             return Response.status(Response.Status.UNAUTHORIZED).build();
