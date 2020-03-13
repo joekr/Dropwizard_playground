@@ -47,7 +47,7 @@ public class LogicApplication extends Application<LogicConfiguration> {
          environment.jersey().register(logicInjector);
 
         final UserDao userDao = logicInjector.getInstance(UserDao.class);
-        final UserResource userResource = new UserResource(userDao);
+        final UserResource userResource = logicInjector.getInstance(UserResource.class);
         final TestResource testResource = new TestResource();
 
         environment.jersey().register(userResource);

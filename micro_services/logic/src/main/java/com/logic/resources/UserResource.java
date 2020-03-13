@@ -1,5 +1,6 @@
 package com.logic.resources;
 
+import com.google.inject.Inject;
 import com.logic.api.UserSignin;
 import com.logic.db.UserDao;
 
@@ -15,6 +16,7 @@ import java.util.Optional;
 public class UserResource {
     private final UserDao userDao;
 
+    @Inject
     public UserResource(UserDao userDao){
         this.userDao = userDao;
     }
