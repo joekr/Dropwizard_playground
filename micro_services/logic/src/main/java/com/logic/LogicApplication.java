@@ -1,5 +1,7 @@
 package com.logic;
 
+import com.google.inject.Guice;
+import com.google.inject.Injector;
 import com.logic.db.UserDao;
 import com.logic.resources.UserResource;
 import io.dropwizard.Application;
@@ -32,8 +34,10 @@ public class LogicApplication extends Application<LogicConfiguration> {
 //        config.setAdminPort(8086);
 //        configuration.setHttpConfiguration(config);
 
-//        TODO: setup guice
-        final UserDao userDao = new UserDao();
+         Injector logicInjector = Guice.createInjector(new LogicModule());
+         environment.jersey().register(logicInjector);
+
+        final UserDao userDao = logicInjector.getInstance(UserDao.class);
         final UserResource userResource = new UserResource(userDao);
 
         environment.jersey().register(userResource);
