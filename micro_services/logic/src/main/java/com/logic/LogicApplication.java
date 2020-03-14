@@ -38,12 +38,7 @@ public class LogicApplication extends Application<LogicConfiguration> {
     public void run(final LogicConfiguration configuration,
                     final Environment environment) {
 
-//        HttpConfiguration config = new HttpConfiguration();
-//        config.setPort(8085);
-//        config.setAdminPort(8086);
-//        configuration.setHttpConfiguration(config);
-
-         Injector logicInjector = Guice.createInjector(new LogicModule());
+         Injector logicInjector = Guice.createInjector(new LogicModule(configuration));
          environment.jersey().register(logicInjector);
 
         final UserDao userDao = logicInjector.getInstance(UserDao.class);
@@ -58,7 +53,7 @@ public class LogicApplication extends Application<LogicConfiguration> {
                     .setAuthenticator(new LogicAuthenticator(userDao))
                     .setPrefix("Bearer")
                     .buildAuthFilter()));
-        //If you want to use @Auth to inject a custom Principal type into your resource
+
         environment.jersey().register(new AuthValueFactoryProvider.Binder<>(User.class));
     }
 

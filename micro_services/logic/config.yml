@@ -10,3 +10,5 @@ server:
   adminConnectors:
     - type: http
       port: 9001
+
+identHost: http://localhost:9004
