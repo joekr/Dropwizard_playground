@@ -41,7 +41,9 @@ public class UserDao {
     }
 
     public Optional<String> signin(UserSignin user) {
-        WebTarget webTarget = this.client.target("http://localhost:9004/users/signin");
+        final String target = String.format("%s/users/signin", this.identHost);
+
+        WebTarget webTarget = this.client.target(target);
         Invocation.Builder invocationBuilder =  webTarget.request(MediaType.APPLICATION_JSON);
         Response response = invocationBuilder.post(Entity.entity(user, MediaType.APPLICATION_JSON));
 
